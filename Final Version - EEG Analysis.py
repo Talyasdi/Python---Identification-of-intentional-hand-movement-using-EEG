@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import mne
 from scipy import stats
+import sklearn
 
 
 # Before running this code please reffer to the experiment documentation
@@ -62,7 +63,7 @@ def data_loading():
 
     montage = mne.channels.read_custom_montage(montage_file_path)     # Load montage
     raw.set_montage(montage, match_case=True)
-    raw.set_eeg_reference(ref_channels=[referance_elctrode]    # Set reference
+    raw.set_eeg_reference(ref_channels=[referance_elctrode])    # Set reference
     return raw
 
 
@@ -127,7 +128,7 @@ def epocs_analysis(filtered_raw):
     epochs.plot()
     epochs[start_block_event_name].plot_image(picks=[5])
     epochs[hand_movement_event_name].plot_image(picks=[5])
-    epochs.info()
+    epochs.info
 
     """
     In this block we define what epochs each block contains.
@@ -227,15 +228,19 @@ def statistical_analysis(blocks_list):
     for channel_idx, (t_val, p_val) in enumerate(zip(t_values.T, p_values.T)):
       counter += 1
       if p_val < 0.05:
-        print(p_val)
+        # print(p_val)
         p_counter += 1
 
     print(counter, p_counter)
 
 def running_all():
+    print("------------------------------STARTING DATA LOADING------------------------------")
     raw = data_loading()
+    print("------------------------------STARTING FILTERING------------------------------")
     filtered_raw = filtering_and_pre_processing(raw)
+    print("------------------------------STARTING EPOCHS ANALYSIS------------------------------")
     blocks_list = epocs_analysis(filtered_raw)
+    print("------------------------------STARTING STATISTICAL ANALYSIS------------------------------")
     statistical_analysis(blocks_list)
 
 if __name__ == "__main__":
